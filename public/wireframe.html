@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <link rel="stylesheet" id='stylesheet-light' href="css/style.min.css" media=''>
+  <!-- <link rel="stylesheet" id='stylesheet-dark' href="css/style-dark.min.css" media='none'>
+  <link rel="stylesheet" id='stylesheet-dispatch' href="css/style-dispatch.min.css" media='none'>   -->
+  <!-- <link rel="icon" type="image/png" href="img/favicon-16x16.png" sizes="16x16" />
+  <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="img/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="img/favicon-180x180.png" sizes="180x180" /> -->
+  
+  <title>Worcester EMS | headsup display v2.0.0</title>
+</head>
+<body>
+  <div class="container-fluid">
+    <div id="header" class="row">
+      <div class="col-9">
+        <div id="patches">
+          <img src="img/patch_minimal.svg" alt="RPIA patch">
+        </div>        
+        <span id="patch-text">Worcester EMS <span id="location">Main Street Station</span></span>
+      </div>
+      <div class="col-3 datetime">
+        <b><span id="date"></span></b><span id="time"></span>
+      </div>
+    </div>
+    
+    <div id="display">
+      <div class="row">
+        <div id="captain" class="col d-flex flex-column supercell">
+          <h3>Captain <span class="vehicle">ALS 1</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4>Schofield, John</h4>
+            <p>6:00a-4:00p</p>
+            <h4>Wilson, Mark</h4>
+            <p>2:00p-12:00a</p>
+            <h4>Brock, Darren</h4>
+            <p>10:00p-8:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="lieutenant" class="col d-flex flex-column supercell">
+          <h3>Lieutenant <span class="vehicle">ALS 4</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4>Gigliotti, Ron</h4>
+            <p>6:00a-6:00p</p>
+            <h4>Tavares, Tony</h4>
+            <p>6:00p-6:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="sierra" class="col d-flex flex-column supercell">
+          <h3>Sierra <span class="vehicle">ALS 2</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4 class="down">Down</h4>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="medical-director" class="col d-flex flex-column supercell">
+          <h3>Medical Director</h3>
+          <div class="mt-auto mb-auto">
+            <h4>Broach</h4>
+            <p>6:00a-6:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="mih" class="col d-flex flex-column supercell">
+          <h3>MIH</h3>
+          <div class="mt-auto mb-auto">
+            <h4>Moreland, Katie</h4>
+            <p>7:00a-3:00p</p>
+            <h4>Inzerillo, Julie</h4>
+            <p>7:00a-3:00p</p>
+            <h4>Wiersma, Brianna</h4>
+            <p>8:00a-1:00p</p>
+            <h4>Knight, Joe</h4>
+            <p>5:00p-1:00a</p>
+            <h4 class="open">OPEN</h4>
+            <p>11:00p-7:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="pav" class="col d-flex flex-column supercell">
+          <h3>Pavilion</h3>
+          <div class="mt-auto mb-auto">
+            <h4>Horowitz, Lisa</h4>
+            <h4>Laighton, Erik</h4>
+            <p>7:00a-3:00p</p>
+            <h4>Hardy, Jake</h4>
+            <h4>Henderson, Rob</h4>
+            <p>3:00p-11:00p</p>
+            <h4>Smith, Jim</h4>
+            <h4>MacDonald, Jamie</h4>
+            <p>11:00p-7:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div id="a11" class="ambulance bls col d-flex flex-column supercell">
+          <h3>A11 <span class="vehicle">2668</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4>Whitehead, Jack</h4>
+            <h4>Burke, Aaron</h4>
+            <p>6:00a-2:00p</p>
+            <h4>Paniagua, Joe</h4>
+            <h4>Houston, David</h4>
+            <p>2:00p-10:00p</p>
+            <h4>Houston, David</h4>
+            <h4>Suarez, Yoelis</h4>
+            <p>10:00p-6:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="a12" class="ambulance bls col d-flex flex-column supercell">
+          <h3>A12 <span class="vehicle">26610</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4 class="open">OPEN</h4>
+            <p>6:00a-2:00p</p>
+            <h4>Hall, Allyson</h4>
+            <h4>Stroiney, Sean</h4>
+            <p>2:00p-10:00p</p>
+            <h4>McWilliams, Gus</h4>
+            <h4>Urato, Zack</h4>
+            <p>10:00p-6:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="p1" class="ambulance als col d-flex flex-column supercell">
+          <h3>P1 <span class="vehicle">26613</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4>Prendergast, Brian</h4>
+            <h4>Shim, Joseph</h4>
+            <p>6:00a-2:00p</p>
+            <h4>Prendergast, Brian</h4>
+            <h4>Helms, Jackie</h4>
+            <p>2:00p-6:00p</p>
+            <h4>Helms, Jackie</h4>
+            <h4>O'Keefe, Mark</h4>
+            <p>6:00p-10:00p</p>
+            <h4>Helms, Jackie</h4>
+            <h4>O'Keefe, Mark</h4>
+            <p>10:00p-6:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="p2" class="ambulance als col d-flex flex-column supercell">
+          <h3>P2 <span class="vehicle">2669</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4>Rettger, Brian</h4>
+            <h4>Williams, Scott</h4>
+            <p>7:00a-3:00p</p>
+            <h4>Ryan, Sean</h4>
+            <h4>Croteau, McKinley</h4>
+            <p>3:00p-11:00p</p>
+            <h4>Criniti, Devin</h4>
+            <h4>Croteau, McKinley</h4>
+            <p>11:00p-7:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="p3" class="ambulance als col d-flex flex-column supercell">
+          <h3>P3 <span class="vehicle">26612</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4>Ward, Rebecca</h4>
+            <h4>O'Hearn, Rob</h4>
+            <p>6:00a-2:00p</p>
+            <h4>Ward, Rebecca</h4>
+            <p>2:00p-6:00p</p>
+            <h4>Howe, Alex</h4>
+            <p>2:00p-10:00p</p>
+            <h4 class="open">OPEN</h4>
+            <p>6:00p-10:00p</p>
+          </div>
+          <div class="notes">Bacc 9a-5p</div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="p4" class="ambulance als col d-flex flex-column supercell">
+          <h3>P4 <span class="vehicle">2660</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4>Kinsella, Kerri</h4>
+            <h4>Johnson, Nick</h4>
+            <p>7:00a-3:00p</p>
+            <h4>Raghavan, Maya</h4>
+            <h4>Himel, Ethan</h4>
+            <p>3:00p-11:00p</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="p5" class="ambulance als col d-flex flex-column supercell">
+          <h3>P5 <span class="vehicle">2664</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4 class="down">DOWN</h4>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="p6" class="ambulance als col d-flex flex-column supercell">
+          <h3>P6 <span class="vehicle">2661</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4>Capitao, Bruno</h4>
+            <h4>Westhaver, Rich</h4>
+            <p>7:00a-3:00p</p>
+            <h4>O'Hearn, Rob</h4>
+            <h4>Whelan, Sean</h4>
+            <p>3:00p-11:00p</p>
+            <h4>Kuenzler, Sam</h4>
+            <h4>Gruner, Lyndon</h4>
+            <p>11:00p-7:00a</p>
+          </div>
+          <div class="notes"></div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="p7" class="ambulance als col d-flex flex-column supercell">
+          <h3>P7 <span class="vehicle">26611</span></h3>
+          <div class="mt-auto mb-auto">
+            <h4 class="down">DOWN</h4>
+          </div>
+          <div class="notes"></div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div id="notes" class="col">
+          <div class="row">
+            <div id="wems-notes" class="col-12"> 
+              <h1>WEMS Notes</h1>
+              <p>
+                Staff meetings (in person at Main St) this week! Tuesday 4 pm and Thursday 8 am
+              </p>
+            </div>
+            <!-- <div id="dept-notes" class="col-12"> 
+              <h1>Department Notes</h1>
+              <p>
+                None
+              </p>
+            </div> -->
+          </div>
+        </div>
+        <div class="col-auto d-flex align-items-stretch"><div class="vr"></div></div>
+        <div id="weather" class="col">
+          <h1>Weather</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" integrity="sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1DKg1ERo0BZlK" crossorigin="anonymous"></script>
+  <!-- <script type="text/javascript" src="/suncalc.js"></script> -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/whiteboard.js"></script>
+</body>
+</html>
