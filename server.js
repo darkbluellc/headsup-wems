@@ -1,17 +1,20 @@
+//node packages
 const express = require('express');
-const app = express();
 const path = require('path');
 const mariadb = require('mariadb');
 const bodyParser = require('body-parser');
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
-const notes = require('./src/notes.js');
-const mishap = require('./src/mishap.js');
-const crews = require('./src/crews.js');
-const calls = require('./src/calls.js');
-
+const cron = require('node-cron');
 require('dotenv').config();
 
+//local packages
+const { getWemsSchedule } = require('./utilities/schedule.js');
+
+//package configuration
+const app = express();
+
+//local configuration
 const pool = mariadb.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
@@ -20,10 +23,10 @@ const pool = mariadb.createPool({
     charset: 'utf8mb4',
 });
 
-// Initialize express app
+//globals
 const PORT = process.env.PORT || 8080;
-const WEBSITE_ACCESS_TOKEN = process.env.WEBSITE_ACCESS_TOKEN;
-const HERALD_TOKEN = process.env.HERALD_TOKEN;
+const SCHEDULE_URL = process.env.SCHEDULE_URL;
+const WEMS_ACCESS_TOKEN = process.env.WEMS_ACCESS_TOKEN;
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -34,98 +37,34 @@ app.get('/suncalc.js', (_, res) => {
     res.sendFile(path.join(__dirname, 'node_modules', 'suncalc', 'suncalc.js'));
 });
 
+//TODO: add server or health info to this page
 app.get('/', (req, res) => {
-    if (WEBSITE_ACCESS_TOKEN !== req.query.token) {
+    res.sendStatus(200);
+});
+
+app.get('/wems', (req, res) => {
+    if (WEMS_ACCESS_TOKEN !== req.query.token) {
         res.sendStatus(403);
     } else {
-        res.sendFile(path.join(__dirname, 'public/index.html'));
+        res.sendFile(path.join(__dirname, 'public/wems.html'));
     }
 });
 
-app.get('/admin', (req, res) => {
-    if (WEBSITE_ACCESS_TOKEN !== req.query.token) {
-        res.sendStatus(403);
-    } else {
-        res.sendFile(path.join(__dirname, 'public/admin.html'));
-    }
-});
+// app.get('/comms', (req, res) => {
+//     if (WEBSITE_ACCESS_TOKEN !== req.query.token) {
+//         res.sendStatus(403);
+//     } else {
+//         res.sendFile(path.join(__dirname, 'public/admin.html'));
+//     }
+// });
 
-app.get('/crew', async (_, res) => {
-    const response_data = await crews.getCrew(pool);
-    res.send(response_data);
-});
-
-app.get('/notes', async (_, res) => {
-    const response_data = await notes.getNotes(pool);
-    io.emit('notes', response_data);
-    res.send(response_data);
-});
-
-app.post('/call/create', async (req, res) => {
-    if (WEBSITE_ACCESS_TOKEN !== req.query.token) {
-        res.sendStatus(403);
-    }
-    else {
-        await calls.createCall(pool, req.body);
-        const response_data = await calls.getTotalCalls(pool);
-        io.emit('calls', response_data);
-        res.send(response_data);
-    }
-});
-
-app.post('/note/create', async (req, res) => {
-    if (WEBSITE_ACCESS_TOKEN !== req.query.token) {
-        res.sendStatus(403);
-    }
-    else {
-        const response_data = await notes.createNote(pool, req.body.note);
-        io.emit('notes', await notes.getNotes(pool));
-        res.send(response_data);
-    }
-});
-
-app.post('/note/delete', async (req, res) => {
-    if (WEBSITE_ACCESS_TOKEN !== req.query.token) {
-        res.sendStatus(403);
-    }
-    else {
-        const response_data = await notes.deleteNote(pool, req.body.note);
-        io.emit('notes', await notes.getNotes(pool));
-        res.send(response_data);
-    }
-});
-
-app.post('/mishap/create', async (req, res) => {
-    if (WEBSITE_ACCESS_TOKEN !== req.query.token) {
-        res.sendStatus(403);
-    }
-    else {
-        await mishap.createMishap(pool, req.body.mishap);
-        const response_data = await mishap.getTotalMishaps(pool);
-        io.emit('mishaps', response_data);
-        res.send(response_data);
-    }
-});
-
-app.get('/mishap', async (_, res) => {
-    const response_data = await mishap.getTotalMishaps(pool);
-    res.send(response_data);
-});
-
-app.post('/chores', (req, res) => {
-    io.emit('chores', req.body);
-    res.send({ success: true });
-});
-
-app.post('/dispatch', (req, res) => {
-    if (HERALD_TOKEN !== req.query.token) {
-        res.sendStatus(403);
-    } else {
-        console.log('received herald dispatch');
-        io.emit('dispatch', req.body);
-        res.send({ success: true });
-    }
-});
+// app.get('/lf', (req, res) => {
+//     if (WEBSITE_ACCESS_TOKEN !== req.query.token) {
+//         res.sendStatus(403);
+//     } else {
+//         res.sendFile(path.join(__dirname, 'public/admin.html'));
+//     }
+// });
 
 io.on('connection', async () => {
     io.emit('notes', await notes.getNotes(pool));
@@ -138,7 +77,11 @@ setInterval(async () => {
     io.emit('crews', await crews.getCrew(pool));
 }, 60000);
 
+cron.schedule('* * * * *', () => {
+    getWemsSchedule();
+});
+
 server.listen(PORT, () => {
-    console.log('Headsup is up!');
+    console.log('crewboard is up!');
     io.emit('refresh');
 });

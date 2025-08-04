@@ -20,6 +20,7 @@
   "homepage": "https://github.com/rpiambulance/headsup#readme",
   "dependencies": {
     "express": "^4.21.1",
+    "googleapis": "^154.1.0",
     "mariadb": "^3.0.2",
     "moment": "^2.29.4",
     "socket.io": "^4.8.0",
@@ -28,6 +29,6 @@
   "devDependencies": {
     "dotenv": "^16.0.3",
     "eslint": "^8.27.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^3.1.10"
   }
 }
