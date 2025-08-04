@@ -1,5 +1,6 @@
 function getSupercellBeautData(tableId, unitId, dayName) {
     const table = document.getElementById(tableId);
+    console.log(table);
     const rows = Array.from(table.rows);
     const unitRowIndices = getUnitRowIndices(tableId, unitId);
     const dayInfo = getDateAndColumnsForDay(tableId, dayName)[0];
